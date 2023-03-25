@@ -1,54 +1,87 @@
 <template>
     <div role="main" class='tela-inicial p-8 bg-gradient-to-r from-green-500 to-blue-500'>
-    
+        <Overlay v-if="mensagemDeErro" @click="mensagemDeErro = ''" :mensagemOverlay="mensagemDeErro"></Overlay>
 
-    
-    <input v-model="novoItem" type="number" placeholder="Numéro de Portas">
 
-    <div v-for="portas in novoItem" :key="portas">
-        
-        <Porta :numPorta="portas" ></Porta>
-        
-    
+        <form :onSubmit="form" v-if="novoItem === 0">
+            <label for="numPortas">Número de Portas:</label><br>
+            <input type="number" id="numPortas" placeholder="Numéro de Portas"><br>
+            <label for="qualPorta">Qual Porta?:</label><br>
+            <input type="number" id="qualPorta" placeholder="Escolha a verdadeira"><br>
+
+            <input type="submit" value="Enviar">
+
+        </form>
+
+
+
+
+
+
+        <div v-for="portas in novoItem" :key="portas">
+
+            <Porta :numPorta="portas"></Porta>
+
+
+        </div>
     </div>
-
-    
-
-  </div>
 </template>
 
 <script lang="ts">
-    import Porta from '../components/Porta.vue'
-    import { defineComponent } from 'vue'
+import Overlay from '../components/Overlay.vue'
+import Porta from '../components/Porta.vue'
+import { defineComponent } from 'vue'
 
-    export default defineComponent ({
-        components: { Porta },
-        props: {
-            novoItem: Number
 
-        },
 
-        data(){
-            return {
-                novoItem: 0
-            }
+export default defineComponent({
+    components: { Porta, Overlay },
+
+    data() {
+        return {
+            mensagemDeErro: '',
+            novoItem: 0
         }
+    },
+    methods: {
+        form(e: any) {
+            e.preventDefault()
+            const numPortas = e.target.numPortas.value
+            const qualPorta = e.target.qualPorta.value
 
-    })
+            if (numPortas === '' || qualPorta === '') {
+                this.mensagemDeErro = 'Erro: Formulário não preenchido'
+                return
+            }
+            if (numPortas > 30) {
+                this.mensagemDeErro = 'Erro: Número máximo de portas é 30'
+                return
+            }
+            const verdade = (numPortas - qualPorta) > -1 && numPortas > 0 && qualPorta > 0
+            if (!verdade) {
+                this.mensagemDeErro = 'Erro: Valor incorreto'
+                return
+            }
+
+            this.novoItem = Number.parseInt(numPortas)
+
+        }
+    }
+
+})
 
 
 </script>
 
 <style lang="scss" scoped>
- .tela-inicial{
+.tela-inicial {
     height: 100vh;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     gap: 32px;
     flex-wrap: wrap;
-    overflow:auto;
+    overflow: auto;
 
-  }
-
+}
 </style>
