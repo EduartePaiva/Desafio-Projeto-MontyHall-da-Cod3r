@@ -20,7 +20,7 @@
 
         <div v-for="portas in novoItem" :key="portas">
 
-            <Porta :numPorta="portas"></Porta>
+            <Porta :numPorta="portas" @diminuirNumPortas="diminuirPortas"></Porta>
 
 
         </div>
@@ -40,7 +40,9 @@ export default defineComponent({
     data() {
         return {
             mensagemDeErro: '',
-            novoItem: 0
+            novoItem: 0,
+            portaPremiada: 0,
+            portasAbertas: 0
         }
     },
     methods: {
@@ -62,9 +64,24 @@ export default defineComponent({
                 this.mensagemDeErro = 'Erro: Valor incorreto'
                 return
             }
+            const numPortasInt = Number.parseInt(numPortas)
+            this.novoItem = numPortasInt
+            this.portasAbertas = numPortasInt
+            this.portaPremiada = Number.parseInt(qualPorta)
 
-            this.novoItem = Number.parseInt(numPortas)
+        },
 
+        diminuirPortas(){
+            this.portasAbertas--
+            console.log(this.portasAbertas)
+
+            if(this.portasAbertas == 0){
+                this.mensagemDeErro = 'Todas as Portas abertas. Reiniciando o Jogo'
+                this.novoItem= 0
+                this.portaPremiada= 0
+                this.portasAbertas= 0
+                
+            }
         }
     }
 

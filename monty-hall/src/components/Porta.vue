@@ -30,7 +30,8 @@ export default defineComponent({
     },
     methods: {
         AbrirPorta(){
-            this.portaAberta = !this.portaAberta
+            this.portaAberta = true
+            this.$emit('diminuirNumPortas')
         }
     }
 })
