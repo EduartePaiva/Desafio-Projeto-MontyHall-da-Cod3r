@@ -10,7 +10,7 @@
         <div v-if="estadoDaPorta !== 'aberta' "
             :class="`
                 numero  select-none text-center mt-3 text-2xl font-bold
-                ${portaSelecionada ? 'text-yellow-300': 'text-red-900'}
+                ${portaSelecionada ? 'text-yellow-300': 'text-white'}
             `">
              {{ numPorta }}
         </div>
@@ -20,6 +20,7 @@
                 ${portaSelecionada ? 'bg-yellow-300' : 'bg-red-900'}
             `"
         />
+        
 
         <Presente v-if="estadoDaPorta === 'aberta' && portaPremiada"/>
         <div class="base bg-gray-300">
