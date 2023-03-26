@@ -1,28 +1,17 @@
 <template>
     <div role="main" class='tela-inicial p-8 bg-gradient-to-r from-green-500 to-blue-500'>
-        <Overlay v-if="mensagemDeErro" @click="mensagemDeErro = ''" :mensagemOverlay="mensagemDeErro"></Overlay>
-
+        <Overlay v-if="mensagemDeErro" @click="clickMensagemDeErro" :mensagemOverlay="mensagemDeErro"></Overlay>
 
         <form :onSubmit="form" v-if="novoItem === 0">
             <label for="numPortas">Número de Portas:</label><br>
             <input type="number" id="numPortas" placeholder="Numéro de Portas"><br>
             <label for="qualPorta">Qual Porta?:</label><br>
             <input type="number" id="qualPorta" placeholder="Escolha a verdadeira"><br>
-
             <input type="submit" value="Enviar">
-
         </form>
 
-        <Porta :numPorta="1" :portaPremiada="true" @diminuirNumPortas="diminuirPortas"></Porta>
-
-
-
-
         <div v-for="portas in novoItem" :key="portas">
-
             <Porta :numPorta="portas" :portaPremiada="portas === portaPremiada" @diminuirNumPortas="diminuirPortas"></Porta>
-
-
         </div>
     </div>
 </template>
@@ -68,20 +57,24 @@ export default defineComponent({
             this.novoItem = numPortasInt
             this.portasAbertas = numPortasInt
             this.portaPremiada = Number.parseInt(qualPorta)
-
         },
 
         diminuirPortas(){
             this.portasAbertas--
-            console.log(this.portasAbertas)
 
             if(this.portasAbertas == 0){
                 this.mensagemDeErro = 'Todas as Portas abertas. Reiniciando o Jogo'
+                
+            }
+        },
+
+        clickMensagemDeErro(){
+            if(this.mensagemDeErro === 'Todas as Portas abertas. Reiniciando o Jogo'){
                 this.novoItem= 0
                 this.portaPremiada= 0
                 this.portasAbertas= 0
-                
             }
+            this.mensagemDeErro = ''
         }
     }
 

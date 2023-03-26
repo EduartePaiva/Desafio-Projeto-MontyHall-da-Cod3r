@@ -7,8 +7,7 @@
              {{ numPorta }}
         </div>
         <div v-if="!portaAberta" class="macaneta bg-yellow-300 rounded-full ml-2"></div>
-
-        <div v-if="portaAberta && portaPremiada" >Presente</div>
+        <Presente v-if="portaAberta && portaPremiada"/>
         <div class="base bg-gray-300">
         </div>
 
@@ -16,11 +15,11 @@
 </template>
 
 <script lang="ts">
-
+import Presente from '../components/Presente.vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-
+    components: {Presente},
     props: {
         numPorta: Number,
         portaPremiada: Boolean,
@@ -28,14 +27,16 @@ export default defineComponent({
     
     data(){
         return {
-            portaAberta: true,
+            portaAberta: false,
         }
     },
     methods: {
         AbrirPorta(){
-            this.portaAberta = !this.portaAberta
-            console.log(this.portaPremiada)
-            this.$emit('diminuirNumPortas')
+            if(!this.portaAberta){
+                this.portaAberta = true
+                console.log(this.portaPremiada)
+                this.$emit('diminuirNumPortas')
+            }
         }
     }
 })
@@ -73,12 +74,9 @@ export default defineComponent({
         height: 4px;
         width: 106px;
         position: absolute;
-        z-index: 100;
         top: 173px;
         left: -7px;
     }
 }
-
-
 
 </style>
