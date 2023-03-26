@@ -1,16 +1,29 @@
 <template>
-    <div @click="AbrirPorta" 
-        :class="portaAberta ? 'porta border-solid border-4 border-red-900 bg-black bg-opacity-50' : 'porta bg-amber-600 border-solid border-4 border-yellow-300'">
+    <div @click="selecionarPorta" 
+    
+        :class="`
+            porta border-solid border-4
+            ${estadoDaPorta === 'aberta' ? ' bg-black bg-opacity-50':'bg-amber-600 '}
+            ${portaSelecionada && estadoDaPorta !== 'aberta' ? 'border-yellow-300' : 'border-red-900'} 
+        `">
 
-
-        <div v-if="!portaAberta" class=" numero text-yellow-300 select-none text-center mt-3 text-2xl font-bold">
+        <div v-if="estadoDaPorta !== 'aberta' "
+            :class="`
+                numero  select-none text-center mt-3 text-2xl font-bold
+                ${portaSelecionada ? 'text-yellow-300': 'text-red-900'}
+            `">
              {{ numPorta }}
         </div>
-        <div v-if="!portaAberta" class="macaneta bg-yellow-300 rounded-full ml-2"></div>
-        <Presente v-if="portaAberta && portaPremiada"/>
+        <div v-if="estadoDaPorta !== 'aberta'"  @click="AbrirPorta" 
+            :class="`
+                macaneta  rounded-full ml-2
+                ${portaSelecionada ? 'bg-yellow-300' : 'bg-red-900'}
+            `"
+        />
+
+        <Presente v-if="estadoDaPorta === 'aberta' && portaPremiada"/>
         <div class="base bg-gray-300">
         </div>
-
     </div>
 </template>
 
@@ -27,16 +40,20 @@ export default defineComponent({
     
     data(){
         return {
-            portaAberta: false,
+            estadoDaPorta: 'padrao',
+            portaSelecionada: false
         }
     },
     methods: {
         AbrirPorta(){
-            if(!this.portaAberta){
-                this.portaAberta = true
-                console.log(this.portaPremiada)
+            if(this.estadoDaPorta !== 'aberta'){
+                this.estadoDaPorta = 'aberta'
                 this.$emit('diminuirNumPortas')
             }
+        },
+
+        selecionarPorta(){
+            if(this.estadoDaPorta !== 'aberta') this.portaSelecionada = !this.portaSelecionada
         }
     }
 })
@@ -44,6 +61,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 
+.d-none{
+    display: none;
+}
 .portaEstaFechada{
     height: 180px;
     width: 100px;
