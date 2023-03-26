@@ -13,14 +13,14 @@
 
         </form>
 
-
+        <Porta :numPorta="1" :portaPremiada="true" @diminuirNumPortas="diminuirPortas"></Porta>
 
 
 
 
         <div v-for="portas in novoItem" :key="portas">
 
-            <Porta :numPorta="portas" @diminuirNumPortas="diminuirPortas"></Porta>
+            <Porta :numPorta="portas" :portaPremiada="portas === portaPremiada" @diminuirNumPortas="diminuirPortas"></Porta>
 
 
         </div>

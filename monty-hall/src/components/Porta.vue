@@ -7,6 +7,8 @@
              {{ numPorta }}
         </div>
         <div v-if="!portaAberta" class="macaneta bg-yellow-300 rounded-full ml-2"></div>
+
+        <div v-if="portaAberta && portaPremiada" >Presente</div>
         <div class="base bg-gray-300">
         </div>
 
@@ -21,16 +23,18 @@ export default defineComponent({
 
     props: {
         numPorta: Number,
+        portaPremiada: Boolean,
     },
     
     data(){
         return {
-            portaAberta: false,
+            portaAberta: true,
         }
     },
     methods: {
         AbrirPorta(){
-            this.portaAberta = true
+            this.portaAberta = !this.portaAberta
+            console.log(this.portaPremiada)
             this.$emit('diminuirNumPortas')
         }
     }
